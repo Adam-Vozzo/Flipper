@@ -19,10 +19,10 @@ void scene_lab_draw(Canvas* canvas, TamagotchiApp* app) {
     for(uint8_t row = 0; row < LAB_VISIBLE; row++) {
         uint8_t idx = scroll + row;
         if(idx >= FeatureCount) break;
-        int y = 15 + row * 10;
+        int y = 15 + row * 9;
         bool selected = idx == app->lab_index;
         if(selected) {
-            canvas_draw_box(canvas, 0, y, 128, 10);
+            canvas_draw_box(canvas, 0, y, 128, 9);
             canvas_set_color(canvas, ColorWhite);
         }
         canvas_draw_str(canvas, 4, y + 8, feature_table[idx].name);
