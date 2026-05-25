@@ -1,0 +1,8 @@
+# ufbt / build artifacts
+dist/
+.vscode/
+*.fap
+*.elf
+*.o
+__pycache__/
+.ufbt/

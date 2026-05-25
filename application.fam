@@ -1,0 +1,13 @@
+App(
+    appid="pocket_critter",
+    name="Pocket Critter",
+    apptype=FlipperAppType.EXTERNAL,
+    entry_point="tamagotchi_app",
+    stack_size=4 * 1024,
+    fap_category="Games",
+    fap_icon="tamagotchi.png",
+    fap_author="Claude + Adam",
+    fap_version="0.1",
+    fap_description="A kaomoji virtual pet with a built-in feature toggle lab.",
+    sources=["*.c"],
+)
