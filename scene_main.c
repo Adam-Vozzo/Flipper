@@ -240,6 +240,15 @@ static void draw_bottom(Canvas* canvas, TamagotchiApp* app) {
     }
 }
 
+static void draw_mood_text(Canvas* canvas, TamagotchiApp* app) {
+    if(!settings_on(&app->settings, FeatureMoodText)) return;
+    if(app->popup_ttl > 0) return; // don't fight the speech bubble
+    Pet* p = &app->pet;
+    if(!p->hatched || !p->alive) return;
+    canvas_set_font(canvas, FontSecondary);
+    canvas_draw_str_aligned(canvas, 64, 47, AlignCenter, AlignCenter, mood_name(p->mood));
+}
+
 static void draw_popup(Canvas* canvas, TamagotchiApp* app) {
     if(app->popup_ttl == 0) return;
     canvas_set_font(canvas, FontSecondary);
@@ -260,6 +269,7 @@ void scene_main_draw(Canvas* canvas, TamagotchiApp* app) {
     draw_poop(canvas, app);
     draw_pet(canvas, app);
     draw_thought(canvas, app);
+    draw_mood_text(canvas, app);
     draw_particles(canvas, app);
     draw_topbar(canvas, app);
     draw_bottom(canvas, app);

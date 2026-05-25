@@ -89,6 +89,24 @@ static void timer_callback(void* ctx) {
         app->weather = (uint8_t)tama_rand_max(app, 3);
     }
 
+    // ambient LED: a slow mood-coloured pulse every ~8s while a critter is alive
+    if(settings_on(&app->settings, FeatureAmbientLed) && settings_on(&app->settings, FeatureLed) &&
+       app->pet.hatched && app->pet.alive && (app->frame % (8 * FRAMES_PER_SEC)) == 0) {
+        const NotificationSequence* s;
+        switch(app->pet.mood) {
+        case MoodHappy:
+        case MoodPlaying: s = &sequence_blink_green_10; break;
+        case MoodHungry: s = &sequence_blink_yellow_10; break;
+        case MoodSad:
+        case MoodSleepy:
+        case MoodAsleep: s = &sequence_blink_blue_10; break;
+        case MoodSick: s = &sequence_blink_red_10; break;
+        case MoodDirty: s = &sequence_blink_magenta_10; break;
+        default: s = &sequence_blink_cyan_10; break;
+        }
+        notification_message(app->notifications, s);
+    }
+
     // step the simulation at 1 Hz
     if((app->frame % FRAMES_PER_SEC) == 0) {
         app->sec++;

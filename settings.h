@@ -12,6 +12,7 @@ typedef enum {
     FeatureSound,
     FeatureHaptics,
     FeatureLed,
+    FeatureAmbientLed, // slow mood-coloured LED pulse while idle
     FeatureBacklightPet, // nudge the backlight when the pet wants attention
     // animation
     FeatureIdleAnim, // blinking + breathing bob
@@ -33,6 +34,7 @@ typedef enum {
     FeatureCatMode, // swap to a cat-flavoured kaomoji set
     FeatureHomeBars, // show the mini stat bars on the home screen
     FeatureClock, // show the in-game clock on home
+    FeatureMoodText, // print the current mood as a word under the pet
     // system
     FeatureAutosave, // persist the pet + toggles between runs
 

@@ -102,6 +102,7 @@ Mood pet_compute_mood(const Pet* p);
 const char* pet_stage_name(LifeStage stage);
 const char* food_name(FoodKind kind);
 const char* trait_name(uint8_t trait);
+const char* mood_name(Mood mood);
 
 // average of the four day-to-day needs (excludes health) for quick display
 uint8_t pet_wellbeing(const Pet* p);

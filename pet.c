@@ -74,6 +74,24 @@ const char* trait_name(uint8_t trait) {
     }
 }
 
+const char* mood_name(Mood mood) {
+    switch(mood) {
+    case MoodHappy: return "happy";
+    case MoodNeutral: return "content";
+    case MoodHungry: return "hungry";
+    case MoodSad: return "sad";
+    case MoodSleepy: return "sleepy";
+    case MoodAsleep: return "asleep";
+    case MoodSick: return "sick";
+    case MoodDirty: return "messy";
+    case MoodPlaying: return "playing";
+    case MoodDead: return "gone";
+    case MoodGhost: return "spooky";
+    case MoodEgg: return "egg";
+    default: return "";
+    }
+}
+
 uint8_t pet_wellbeing(const Pet* p) {
     return (uint8_t)(((int)p->food + p->happy + p->energy + p->hygiene) / 4);
 }

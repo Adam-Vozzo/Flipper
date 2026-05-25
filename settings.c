@@ -5,6 +5,7 @@ const FeatureInfo feature_table[FeatureCount] = {
     [FeatureSound] = {"Sound FX", "Chirps & beeps on actions", true},
     [FeatureHaptics] = {"Haptics", "Vibrate on actions", true},
     [FeatureLed] = {"LED Mood", "RGB blinks match mood", true},
+    [FeatureAmbientLed] = {"Ambient LED", "Slow mood glow when idle", false},
     [FeatureBacklightPet] = {"Attention", "Wake screen when neglected", false},
 
     [FeatureIdleAnim] = {"Idle Anim", "Blink + breathing bob", true},
@@ -26,6 +27,7 @@ const FeatureInfo feature_table[FeatureCount] = {
     [FeatureCatMode] = {"Cat Mode", "Cat-style kaomoji", false},
     [FeatureHomeBars] = {"Home Bars", "Mini stat bars on home", true},
     [FeatureClock] = {"Clock", "Show in-game time", false},
+    [FeatureMoodText] = {"Mood Text", "Name the mood on home", false},
 
     [FeatureAutosave] = {"Autosave", "Keep pet between runs", true},
 };

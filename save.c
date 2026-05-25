@@ -3,7 +3,7 @@
 #include <storage/storage.h>
 
 #define SAVE_MAGIC 0x43525452u // "CRTR"
-#define SAVE_VERSION 3u
+#define SAVE_VERSION 4u
 #define SAVE_PATH APP_DATA_PATH("critter.sav")
 
 typedef struct {
