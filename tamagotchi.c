@@ -58,6 +58,7 @@ static void draw_callback(Canvas* canvas, void* ctx) {
     case SceneFeed: scene_feed_draw(canvas, app); break;
     case SceneStats: scene_stats_draw(canvas, app); break;
     case SceneLab: scene_lab_draw(canvas, app); break;
+    case SceneGame: scene_game_draw(canvas, app); break;
     case SceneAbout: scene_about_draw(canvas, app); break;
     default: break;
     }
@@ -111,6 +112,7 @@ static void handle_input(TamagotchiApp* app, InputEvent* event) {
     case SceneFeed: scene_feed_input(app, event); break;
     case SceneStats: scene_stats_input(app, event); break;
     case SceneLab: scene_lab_input(app, event); break;
+    case SceneGame: scene_game_input(app, event); break;
     case SceneAbout: scene_about_input(app, event); break;
     default: break;
     }

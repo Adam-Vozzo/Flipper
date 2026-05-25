@@ -18,6 +18,7 @@ const FeatureInfo feature_table[FeatureCount] = {
     [FeatureWeather] = {"Weather", "Drifting sky & rain", false},
     [FeatureDayNight] = {"Day/Night", "Sun & moon cycle", false},
     [FeatureEvolveByCare] = {"Karma Evo", "Care shapes final form", false},
+    [FeatureMinigame] = {"Mini-game", "Guessing game in menu", true},
 
     [FeatureBigFace] = {"Big Face", "Large centered kaomoji", true},
     [FeatureHomeBars] = {"Home Bars", "Mini stat bars on home", true},

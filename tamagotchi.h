@@ -24,6 +24,7 @@ typedef enum {
     SceneFeed, // food picker
     SceneStats,
     SceneLab, // the feature-toggle playground
+    SceneGame, // guessing mini-game
     SceneAbout,
     SceneCount,
 } Scene;
@@ -56,6 +57,15 @@ typedef struct TamagotchiApp {
     uint8_t food_index;
     uint8_t lab_index;
     uint8_t lab_scroll;
+
+    // guessing mini-game state
+    struct {
+        uint8_t round;
+        uint8_t score;
+        uint8_t phase; // 0 guessing, 1 reveal, 2 done
+        uint8_t choice; // which way the pet leaned (0 left, 1 right)
+        bool correct; // was the last guess right
+    } game;
 
     // transient feedback
     char popup[POPUP_MAX];
@@ -123,6 +133,9 @@ void scene_stats_input(TamagotchiApp* app, InputEvent* event);
 
 void scene_lab_draw(Canvas* canvas, TamagotchiApp* app);
 void scene_lab_input(TamagotchiApp* app, InputEvent* event);
+
+void scene_game_draw(Canvas* canvas, TamagotchiApp* app);
+void scene_game_input(TamagotchiApp* app, InputEvent* event);
 
 void scene_about_draw(Canvas* canvas, TamagotchiApp* app);
 void scene_about_input(TamagotchiApp* app, InputEvent* event);

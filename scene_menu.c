@@ -7,6 +7,7 @@ typedef enum {
     MenuClean,
     MenuHeal,
     MenuCuddle,
+    MenuGame,
     MenuStats,
     MenuLab,
     MenuNewEgg,
@@ -22,6 +23,7 @@ static const char* menu_label(const TamagotchiApp* app, MenuItem item) {
     case MenuClean: return "Clean";
     case MenuHeal: return "Medicine";
     case MenuCuddle: return "Cuddle";
+    case MenuGame: return "Play game";
     case MenuStats: return "Stats";
     case MenuLab: return "Lab (toggles)";
     case MenuNewEgg: return "New Egg";
@@ -82,6 +84,19 @@ static void menu_select(TamagotchiApp* app) {
     case MenuCuddle:
         pet_cuddle(app);
         app->scene = SceneMain;
+        break;
+    case MenuGame:
+        if(!settings_on(&app->settings, FeatureMinigame)) {
+            tama_popup(app, "Enable in Lab!");
+            app->scene = SceneMain;
+        } else if(!app->pet.hatched || !app->pet.alive) {
+            tama_popup(app, "No critter yet!");
+            app->scene = SceneMain;
+        } else {
+            app->scene = SceneGame;
+            memset(&app->game, 0, sizeof(app->game));
+            app->game.choice = (uint8_t)tama_rand_max(app, 2);
+        }
         break;
     case MenuStats:
         app->scene = SceneStats;

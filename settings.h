@@ -25,6 +25,7 @@ typedef enum {
     FeatureWeather, // ambient weather that drifts over time
     FeatureDayNight, // day/night cycle with sun/moon
     FeatureEvolveByCare, // final form depends on how well you cared
+    FeatureMinigame, // unlock the guessing mini-game
     // ui
     FeatureBigFace, // render the kaomoji large & centered
     FeatureHomeBars, // show the mini stat bars on the home screen
