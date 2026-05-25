@@ -112,7 +112,12 @@ static void draw_grave(Canvas* canvas, TamagotchiApp* app) {
     int bob = bob_table[(app->frame / 3) % 4];
     canvas_set_font(canvas, FontPrimary);
     canvas_draw_str_aligned(
-        canvas, 64, 22 - bob, AlignCenter, AlignCenter, kaomoji_for_mood(MoodGhost, false, app->frame));
+        canvas,
+        64,
+        22 - bob,
+        AlignCenter,
+        AlignCenter,
+        kaomoji_for_mood(MoodGhost, false, app->frame, false));
 }
 
 static void draw_pet(Canvas* canvas, TamagotchiApp* app) {
@@ -139,10 +144,62 @@ static void draw_pet(Canvas* canvas, TamagotchiApp* app) {
         canvas_draw_line(canvas, 56, 53, 72, 53);
     }
 
-    const char* face = kaomoji_face(p, app->blink, app->frame);
+    const char* face =
+        kaomoji_face(p, app->blink, app->frame, settings_on(&app->settings, FeatureCatMode));
     canvas_set_font(
         canvas, settings_on(&app->settings, FeatureBigFace) ? FontPrimary : FontSecondary);
     canvas_draw_str_aligned(canvas, 64 + dx, 32 + dy, AlignCenter, AlignCenter, face);
+}
+
+static void draw_thought(Canvas* canvas, TamagotchiApp* app) {
+    if(!settings_on(&app->settings, FeatureThoughts)) return;
+    Pet* p = &app->pet;
+    if(!p->hatched || !p->alive || p->asleep) return;
+
+    char want = 0; // f food, z sleep, ~ wash, h love
+    if(p->food < 30)
+        want = 'f';
+    else if(p->energy < 25)
+        want = 'z';
+    else if(p->hygiene < 30)
+        want = '~';
+    else if(p->happy < 30)
+        want = 'h';
+    if(!want) return;
+
+    int bx = 84, by = 12, bw = 20, bh = 14;
+    canvas_set_color(canvas, ColorWhite);
+    canvas_draw_rbox(canvas, bx, by, bw, bh, 4);
+    canvas_set_color(canvas, ColorBlack);
+    canvas_draw_rframe(canvas, bx, by, bw, bh, 4);
+    // tail toward the pet
+    canvas_draw_disc(canvas, bx, by + bh + 1, 1);
+    canvas_draw_dot(canvas, bx - 3, by + bh + 4);
+
+    int cx = bx + bw / 2, cy = by + bh / 2;
+    switch(want) {
+    case 'f':
+        canvas_draw_disc(canvas, cx, cy, 3);
+        canvas_set_color(canvas, ColorWhite);
+        canvas_draw_dot(canvas, cx - 1, cy - 1);
+        canvas_set_color(canvas, ColorBlack);
+        break;
+    case 'z':
+        canvas_set_font(canvas, FontSecondary);
+        canvas_draw_str_aligned(canvas, cx, cy + 1, AlignCenter, AlignCenter, "Z");
+        break;
+    case '~':
+        canvas_draw_circle(canvas, cx, cy, 3);
+        break;
+    case 'h':
+        canvas_draw_disc(canvas, cx - 2, cy - 1, 1);
+        canvas_draw_disc(canvas, cx + 1, cy - 1, 1);
+        canvas_draw_dot(canvas, cx - 1, cy + 1);
+        canvas_draw_dot(canvas, cx, cy + 2);
+        break;
+    default:
+        break;
+    }
 }
 
 static void draw_topbar(Canvas* canvas, TamagotchiApp* app) {
@@ -202,6 +259,7 @@ void scene_main_draw(Canvas* canvas, TamagotchiApp* app) {
     if(settings_on(&app->settings, FeatureFloor)) draw_room(canvas);
     draw_poop(canvas, app);
     draw_pet(canvas, app);
+    draw_thought(canvas, app);
     draw_particles(canvas, app);
     draw_topbar(canvas, app);
     draw_bottom(canvas, app);

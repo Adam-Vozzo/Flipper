@@ -31,7 +31,12 @@ void scene_game_draw(Canvas* canvas, TamagotchiApp* app) {
         canvas_draw_str_aligned(canvas, 18, 36, AlignCenter, AlignCenter, "<");
         canvas_draw_str_aligned(canvas, 110, 36, AlignCenter, AlignCenter, ">");
         canvas_draw_str_aligned(
-            canvas, 64, 34, AlignCenter, AlignCenter, kaomoji_for_mood(MoodNeutral, false, app->frame));
+            canvas,
+            64,
+            34,
+            AlignCenter,
+            AlignCenter,
+            kaomoji_for_mood(MoodNeutral, false, app->frame, settings_on(&app->settings, FeatureCatMode)));
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_str_aligned(canvas, 64, 60, AlignCenter, AlignBottom, "Which way will it lean?");
     } else if(app->game.phase == 1) {
@@ -44,7 +49,11 @@ void scene_game_draw(Canvas* canvas, TamagotchiApp* app) {
             34,
             AlignCenter,
             AlignCenter,
-            kaomoji_for_mood(app->game.correct ? MoodHappy : MoodSad, false, app->frame));
+            kaomoji_for_mood(
+                app->game.correct ? MoodHappy : MoodSad,
+                false,
+                app->frame,
+                settings_on(&app->settings, FeatureCatMode)));
         canvas_set_font(canvas, FontSecondary);
         canvas_draw_str_aligned(
             canvas, 64, 60, AlignCenter, AlignBottom, app->game.correct ? "Yes! (OK)" : "Nope! (OK)");

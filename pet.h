@@ -42,6 +42,15 @@ typedef enum {
     FoodKindCount,
 } FoodKind;
 
+typedef enum {
+    TraitEasy, // balanced, no modifiers
+    TraitGlutton, // gets hungry faster
+    TraitLazy, // tires slowly but bores quickly
+    TraitBouncy, // burns energy fast, stays cheerful
+    TraitFussy, // gets dirty faster
+    TraitCount,
+} Trait;
+
 typedef struct {
     char name[12];
 
@@ -60,6 +69,8 @@ typedef struct {
     uint8_t poop; // piles on the floor
     int32_t care_score; // good care up, neglect down -> karma evo
     uint16_t neglect; // consecutive neglect ticks
+
+    uint8_t personality; // Trait
 
     bool hatched;
     bool alive;
@@ -90,6 +101,7 @@ void pet_cuddle(TamagotchiApp* app);
 Mood pet_compute_mood(const Pet* p);
 const char* pet_stage_name(LifeStage stage);
 const char* food_name(FoodKind kind);
+const char* trait_name(uint8_t trait);
 
 // average of the four day-to-day needs (excludes health) for quick display
 uint8_t pet_wellbeing(const Pet* p);

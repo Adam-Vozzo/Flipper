@@ -17,6 +17,7 @@ typedef enum {
     FeatureIdleAnim, // blinking + breathing bob
     FeatureParticles, // floating hearts / zzz / crumbs
     FeatureFloor, // draw a little room + floor instead of empty void
+    FeatureThoughts, // thought bubble showing what the pet wants
     // simulation
     FeatureAging, // grow through life stages
     FeaturePoop, // produces poop that must be cleaned
@@ -26,8 +27,10 @@ typedef enum {
     FeatureDayNight, // day/night cycle with sun/moon
     FeatureEvolveByCare, // final form depends on how well you cared
     FeatureMinigame, // unlock the guessing mini-game
+    FeaturePersonality, // each pet gets a random temperament
     // ui
     FeatureBigFace, // render the kaomoji large & centered
+    FeatureCatMode, // swap to a cat-flavoured kaomoji set
     FeatureHomeBars, // show the mini stat bars on the home screen
     FeatureClock, // show the in-game clock on home
     // system

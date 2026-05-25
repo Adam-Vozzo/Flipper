@@ -23,6 +23,8 @@ void scene_stats_draw(Canvas* canvas, TamagotchiApp* app) {
     char right[16];
     if(p->sick) {
         snprintf(right, sizeof(right), "SICK!");
+    } else if(settings_on(&app->settings, FeaturePersonality)) {
+        snprintf(right, sizeof(right), "%s", trait_name(p->personality));
     } else {
         snprintf(right, sizeof(right), "Care %ld", (long)p->care_score);
     }

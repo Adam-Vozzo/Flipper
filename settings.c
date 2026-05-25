@@ -10,6 +10,7 @@ const FeatureInfo feature_table[FeatureCount] = {
     [FeatureIdleAnim] = {"Idle Anim", "Blink + breathing bob", true},
     [FeatureParticles] = {"Particles", "Floating hearts / zzz", true},
     [FeatureFloor] = {"Room", "Draw a little room", true},
+    [FeatureThoughts] = {"Thoughts", "Bubble shows its wish", true},
 
     [FeatureAging] = {"Aging", "Grow through life stages", true},
     [FeaturePoop] = {"Poop", "Makes a mess to clean", true},
@@ -19,8 +20,10 @@ const FeatureInfo feature_table[FeatureCount] = {
     [FeatureDayNight] = {"Day/Night", "Sun & moon cycle", false},
     [FeatureEvolveByCare] = {"Karma Evo", "Care shapes final form", false},
     [FeatureMinigame] = {"Mini-game", "Guessing game in menu", true},
+    [FeaturePersonality] = {"Traits", "Random temperaments", false},
 
     [FeatureBigFace] = {"Big Face", "Large centered kaomoji", true},
+    [FeatureCatMode] = {"Cat Mode", "Cat-style kaomoji", false},
     [FeatureHomeBars] = {"Home Bars", "Mini stat bars on home", true},
     [FeatureClock] = {"Clock", "Show in-game time", false},
 

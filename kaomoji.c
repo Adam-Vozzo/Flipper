@@ -14,11 +14,38 @@ static const char* const k_playing[] = {"\\(^o^)/", "(^o^)/", "\\(>w<)", "(>w<)/
 static const char* const k_dead[] = {"(x_x)", "(X_X)", "(+_+)"};
 static const char* const k_ghost[] = {"( o_o)~", "~(o_o )", "( -_-)~", "[ o_o ]"};
 
+// Cat-flavoured variants (toggle: Cat Mode).
+static const char* const c_happy[] = {"(=^o^=)", "(=^.^=)", "\\(=^o^=)/", "(=^w^=)"};
+static const char* const c_neutral[] = {"(=o.o=)", "(=-.-=)", "(=^.^=)", "(=o_o=)"};
+static const char* const c_hungry[] = {"(=@.@=)", "(=o.o=)?", "(=>.<=)", "(=^q^=)"};
+static const char* const c_sad[] = {"(=T.T=)", "(=;.;=)", "(=u.u=)", "(=._.=)"};
+static const char* const c_sleepy[] = {"(=-.-=)", "(=u.u=)", "(=_._=)", "(=-.-=)"};
+static const char* const c_asleep[] = {"(=-.-=)z", "(=u.u=)zz", "(=_._=)zZ", "(=-.-=)zzZ"};
+static const char* const c_sick[] = {"(=x.x=)", "(=+.+=)", "(=@.@=)", "(=>.<=)"};
+static const char* const c_dirty[] = {"(=>.<=)", "(=o.O=)", "(=;.;=)", "(=>_<=)"};
+static const char* const c_playing[] = {"\\(=^o^=)/", "(=^o^=)/", "\\(=>w<=)", "(=>w<=)/"};
+
 #define PICK(arr, frame, slow) (arr[((frame) / (slow)) % (sizeof(arr) / sizeof(arr[0]))])
 
-const char* kaomoji_for_mood(Mood mood, bool blink, uint32_t frame) {
+const char* kaomoji_for_mood(Mood mood, bool blink, uint32_t frame, bool cat) {
     // A short, periodic blink reads as "alive" for the calm moods.
-    if(blink && (mood == MoodNeutral || mood == MoodHappy)) return "(-_-)";
+    if(blink && (mood == MoodNeutral || mood == MoodHappy)) return cat ? "(=-.-=)" : "(-_-)";
+
+    if(cat) {
+        switch(mood) {
+        case MoodHappy: return PICK(c_happy, frame, 7);
+        case MoodNeutral: return PICK(c_neutral, frame, 9);
+        case MoodHungry: return PICK(c_hungry, frame, 5);
+        case MoodSad: return PICK(c_sad, frame, 8);
+        case MoodSleepy: return PICK(c_sleepy, frame, 8);
+        case MoodAsleep: return PICK(c_asleep, frame, 4);
+        case MoodSick: return PICK(c_sick, frame, 5);
+        case MoodDirty: return PICK(c_dirty, frame, 6);
+        case MoodPlaying: return PICK(c_playing, frame, 2);
+        case MoodEgg: return "( o )";
+        default: break; // dead/ghost share the base set below
+        }
+    }
 
     switch(mood) {
     case MoodHappy: return PICK(k_happy, frame, 7);
@@ -37,6 +64,6 @@ const char* kaomoji_for_mood(Mood mood, bool blink, uint32_t frame) {
     }
 }
 
-const char* kaomoji_face(const Pet* p, bool blink, uint32_t frame) {
-    return kaomoji_for_mood(p->mood, blink, frame);
+const char* kaomoji_face(const Pet* p, bool blink, uint32_t frame, bool cat) {
+    return kaomoji_for_mood(p->mood, blink, frame, cat);
 }

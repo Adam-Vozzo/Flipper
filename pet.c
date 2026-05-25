@@ -63,6 +63,17 @@ const char* food_name(FoodKind kind) {
     }
 }
 
+const char* trait_name(uint8_t trait) {
+    switch(trait) {
+    case TraitEasy: return "Easygoing";
+    case TraitGlutton: return "Glutton";
+    case TraitLazy: return "Lazy";
+    case TraitBouncy: return "Bouncy";
+    case TraitFussy: return "Fussy";
+    default: return "?";
+    }
+}
+
 uint8_t pet_wellbeing(const Pet* p) {
     return (uint8_t)(((int)p->food + p->happy + p->energy + p->hygiene) / 4);
 }
@@ -109,6 +120,8 @@ void pet_hatch(TamagotchiApp* app) {
     p->alive = true;
     p->stage = StageBaby;
     p->age_ticks = 0;
+    p->personality =
+        settings_on(&app->settings, FeaturePersonality) ? (uint8_t)tama_rand_max(app, TraitCount) : TraitEasy;
     tama_emote(app, EmoteHatch);
     tama_popup(app, "It hatched! <3");
     tama_spawn_particles(app, 'h', 5);
@@ -306,14 +319,26 @@ void pet_tick(TamagotchiApp* app) {
             tama_popup(app, "*yawn* morning!");
         }
     } else {
-        if(due(app, IV_FOOD)) p->food = u8_dec(p->food, 1);
+        uint8_t tr = settings_on(&app->settings, FeaturePersonality) ? p->personality : TraitEasy;
+
+        if(due(app, IV_FOOD)) p->food = u8_dec(p->food, tr == TraitGlutton ? 2 : 1);
+
         if(due(app, IV_HAPPY)) {
             int extra = (p->food < 25 ? 1 : 0) + (p->hygiene < 25 ? 1 : 0);
+            if(tr == TraitLazy) extra++; // bores quickly
+            if(tr == TraitBouncy && extra > 0) extra--; // stays cheerful
             p->happy = u8_dec(p->happy, 1 + extra);
         }
-        if(due(app, IV_ENERGY)) p->energy = u8_dec(p->energy, 1);
+
+        if(tr == TraitLazy) {
+            if(due(app, IV_ENERGY * 2)) p->energy = u8_dec(p->energy, 1);
+        } else if(due(app, IV_ENERGY)) {
+            p->energy = u8_dec(p->energy, tr == TraitBouncy ? 2 : 1);
+        }
+
         if(due(app, IV_HYGIENE)) {
             int extra = (settings_on(&app->settings, FeaturePoop) && p->poop >= 2) ? 1 : 0;
+            if(tr == TraitFussy) extra++;
             p->hygiene = u8_dec(p->hygiene, 1 + extra);
         }
     }
