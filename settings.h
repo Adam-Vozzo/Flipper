@@ -29,6 +29,8 @@ typedef enum {
     FeatureBigFace, // render the kaomoji large & centered
     FeatureHomeBars, // show the mini stat bars on the home screen
     FeatureClock, // show the in-game clock on home
+    // system
+    FeatureAutosave, // persist the pet + toggles between runs
 
     FeatureCount,
 } FeatureId;

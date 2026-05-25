@@ -70,6 +70,7 @@ typedef struct TamagotchiApp {
 
     uint32_t rng;
     bool running;
+    bool want_save; // set by the sim, serviced by the main loop
 } TamagotchiApp;
 
 // --- small xorshift PRNG so we don't depend on libc rand quirks ---

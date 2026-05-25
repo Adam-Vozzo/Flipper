@@ -22,6 +22,8 @@ const FeatureInfo feature_table[FeatureCount] = {
     [FeatureBigFace] = {"Big Face", "Large centered kaomoji", true},
     [FeatureHomeBars] = {"Home Bars", "Mini stat bars on home", true},
     [FeatureClock] = {"Clock", "Show in-game time", false},
+
+    [FeatureAutosave] = {"Autosave", "Keep pet between runs", true},
 };
 
 void settings_defaults(Settings* s) {

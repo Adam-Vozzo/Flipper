@@ -1,4 +1,5 @@
 #include "tamagotchi.h"
+#include "save.h"
 
 // ---------------- shared helpers ----------------
 
@@ -91,6 +92,10 @@ static void timer_callback(void* ctx) {
     if((app->frame % FRAMES_PER_SEC) == 0) {
         app->sec++;
         pet_tick(app);
+        // periodic autosave (serviced outside the lock by the main loop)
+        if(settings_on(&app->settings, FeatureAutosave) && (app->sec % 60) == 0) {
+            app->want_save = true;
+        }
     }
 
     furi_mutex_release(app->mutex);
@@ -124,6 +129,7 @@ static TamagotchiApp* tamagotchi_alloc(void) {
     pet_init(&app->pet);
 
     app->mutex = furi_mutex_alloc(FuriMutexTypeNormal);
+    save_load(app); // restore a previous critter if one was saved
     app->event_queue = furi_message_queue_alloc(8, sizeof(InputEvent));
 
     app->view_port = view_port_alloc();
@@ -162,7 +168,13 @@ int32_t tamagotchi_app(void* p) {
 
     InputEvent event;
     while(app->running) {
-        if(furi_message_queue_get(app->event_queue, &event, 100) != FuriStatusOk) continue;
+        if(furi_message_queue_get(app->event_queue, &event, 100) != FuriStatusOk) {
+            if(app->want_save) {
+                app->want_save = false;
+                save_store(app);
+            }
+            continue;
+        }
         if(event.type != InputTypeShort && event.type != InputTypeLong &&
            event.type != InputTypeRepeat)
             continue;
@@ -177,6 +189,10 @@ int32_t tamagotchi_app(void* p) {
         handle_input(app, &event);
         furi_mutex_release(app->mutex);
         view_port_update(app->view_port);
+    }
+
+    if(settings_on(&app->settings, FeatureAutosave)) {
+        save_store(app);
     }
 
     tamagotchi_free(app);
